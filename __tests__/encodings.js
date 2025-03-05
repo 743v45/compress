@@ -54,6 +54,16 @@ describe('parseAcceptEncoding', () => {
         deflate: 0.3,
         identity: 0.5
       }
+    },
+    {
+      input: 'identity;q=1, *;q=0',
+      output: {
+        br: undefined,
+        gzip: 0,
+        compress: undefined,
+        deflate: 0,
+        identity: 1
+      }
     }
   ]
 

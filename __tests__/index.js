@@ -354,6 +354,22 @@ describe('Compress', () => {
     assert.strictEqual(res.headers['content-encoding'], 'gzip')
   })
 
+  test('accept-encoding: identity;q=1, *;q=0', async () => {
+    const app = new Koa()
+
+    app.use(compress())
+    app.use(sendBuffer)
+    server = app.listen()
+
+    const res = await request(server)
+      .get('/')
+      .set('Accept-Encoding', 'identity;q=1, *;q=0')
+      .expect(200)
+
+    assert.strictEqual(res.headers.vary, 'Accept-Encoding')
+    assert(!res.headers['content-encoding'])
+  })
+
   if (process.versions.brotli) {
     test('accept-encoding: br', async () => {
       const app = new Koa()
